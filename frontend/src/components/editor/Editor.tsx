@@ -1,28 +1,22 @@
 import React, {useEffect, useState} from "react";
 import Cookies from "universal-cookie";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api from "../../Api";
 
 const cookies = new Cookies();
+var ws = null;
 
 const Editor = () => {
+  
   const navi = useNavigate();
-
+  const location = useLocation();
 
   useEffect(() => {
-    const fetchAllUsers =async () => {
-        try{
-            //const response = await api.get('/myself', { headers: {"Authorization" : `Bearer ${cookies.get('jwt')}`} })
-            //setUserData(response.data)
-        }catch(error){
-            console.error(error);
-        };
-            };
     //redirect user to / if he isn't logged in 
     //TODO: Temporary solution, change this in future
     if(cookies.get('jwt')){
-      console.log(cookies.get('jwt'))
-        //fetchAllUsers();
+    
+      ws = new WebSocket('ws://localhost:8000/user/connect/'+location.state.room_id);
     }else(
       setTimeout(()=>{
           navi("/login", {replace: true})
@@ -30,7 +24,7 @@ const Editor = () => {
   )
 }, [])
   return (
-    <div>Editor</div>
+    <div>Witaj {location.state.username}</div>
   )
 }
 

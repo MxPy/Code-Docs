@@ -9,20 +9,18 @@ router = APIRouter(
     prefix='/user',
     tags=['user'])
 
-def check_user(data: schemas.UserLogin):
-    if data.room_id != "":
-        return jwt_handler.signJWT(data.username, data.room_id)
-    else:
-        return jwt_handler.signJWT(data.username, str(uuid4()))
-    #return False
 
 @router.post("/login", status_code=status.HTTP_200_OK)
 async def user_login(user:schemas.UserLogin):
-    token = check_user(user)
-    # if not token:
-    #     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
-    #                         detail=f'Wrong username or password')
-    return token
+    if user.room_id != "":
+        token =  jwt_handler.signJWT(user.username, user.room_id)
+    else:
+        user.room_id = str(uuid4())
+        token =  jwt_handler.signJWT(user.username, user.room_id)
+    return {
+        "token": token,
+        "room_id": user.room_id
+        }  
 
 #TODO: move this to other router
 manager = ConnectionManager()

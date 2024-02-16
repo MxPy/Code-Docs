@@ -2,16 +2,15 @@ import React, {useState, useEffect} from "react";
 import api from "../../Api";
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
-interface NewUser {
+type UserData = {
     username: string;
-    
+    room_id: string; 
 }
 
 const cookies = new Cookies();
 
 const Login = () => {
     const navi = useNavigate();
-
     //redirect user to / if he's logged in 
     //TODO: Temporary solution, change this in future
     useEffect(() => {
@@ -20,13 +19,14 @@ const Login = () => {
         }
         else(
             setTimeout(()=>{
-                navi("/", {replace: true})
+                navi("/", {replace: true, state: formData})
             }, 100)
         )
     }, [])
     
-    const [formData, setFormData] = useState<NewUser> ({
+    const [formData, setFormData] = useState<UserData> ({
         username: '',
+        room_id: '',
     })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
@@ -37,13 +37,14 @@ const Login = () => {
     const handleSubmit =async (e:React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         try{
-            const response = await api.post('/login', formData);
-            cookies.set("jwt", response.data["access_token"], {path: '/', expires: new Date(Date.now()+response.data["exp"]*1000)});
+            const response = await api.post('/user/login', formData);
+            cookies.set("jwt", response.data["token"]["access_token"], {path: '/', expires: new Date(Date.now()+response.data["token"]["exp"]*1000)});
+            formData.room_id = response.data["room_id"]
             setTimeout(()=>{
-                navi("/", {replace: true})
+                navi("/", {replace: true, state: formData})
             }, 100)
         }catch(error){
-            alert("Wrong Username or Password")
+            alert("Something gone wrong")
         }
     }
   return (
@@ -51,7 +52,7 @@ const Login = () => {
         <a href="#" className="flex items-center text-2xl font-semibold text-gray-900 dark:text-white"> </a>
         <div className="flex justify-center bg-slate-700 text-gray-200 border-slate-500  rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-">
             <div className="p-4 space-y-4 md:space-y-3 sm:p-4">
-                <form /*onSubmit = {handleSubmit}*/ className="space-y-4 md:space-y-3" action="#">
+                <form onSubmit = {handleSubmit} className="space-y-4 md:space-y-3" action="#">
                 <div>
                         <input onChange = {handleChange} type="username" name="username" id="username" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Username"></input>
                     </div>
