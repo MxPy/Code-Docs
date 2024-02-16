@@ -4,8 +4,6 @@ from routers import user
 
 app = FastAPI()
 
-app = FastAPI()
-
 
 origins = ["http://localhost:3000",
            "http://192.168.33.7:3000"]

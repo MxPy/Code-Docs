@@ -24,6 +24,7 @@ async def user_login(user:schemas.UserLogin):
     #                         detail=f'Wrong username or password')
     return token
 
+#TODO: move this to other router
 manager = ConnectionManager()
 @router.websocket("/connect/{room_id}")
 async def user_connect(websocket: WebSocket, room_id: str):
