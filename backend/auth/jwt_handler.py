@@ -18,9 +18,10 @@ def token_response(token: str):
     }
 
 # function used for signing the JWT string
-def signJWT(user_id: int) -> Dict[str, str]:
+def signJWT(username: str, room_id: str) -> Dict[str, str]:
     payload = {
-        "userID": user_id,
+        "username": username,
+        "room_id": room_id,
         "exp": time.time() + EXP_TIME
     }
     token = jwt.encode(payload, JWT_SECRET, algorithm=JWT_ALGORITHM)
