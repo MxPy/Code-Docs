@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import api from "../../Api";
 import Cookies from 'universal-cookie';
 import { useNavigate } from 'react-router-dom';
 interface NewUser {
@@ -10,12 +11,39 @@ const cookies = new Cookies();
 
 const Login = () => {
     const navi = useNavigate();
+
+    useEffect(() => {
+        
+        if(!cookies.get('jwt')){
+            console.log(cookies.get('jwt'))
+        }
+        else(
+            setTimeout(()=>{
+                navi("/", {replace: true})
+            }, 100)
+        )
+    }, [])
+    
     const [formData, setFormData] = useState<NewUser> ({
         username: '',
     })
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>)=>{
         const {name, value} = e.target;
         setFormData(prevData =>({...prevData, [name]: value}))
+    }
+    
+    const handleSubmit =async (e:React.ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        try{
+            const response = await api.post('/login', formData);
+            cookies.set("jwt", response.data["access_token"], {path: '/', expires: new Date(Date.now()+response.data["exp"]*1000)});
+            setTimeout(()=>{
+                navi("/", {replace: true})
+            }, 100)
+        }catch(error){
+            alert("Wrong Username or Password")
+        }
     }
   return (
     <div className="flex justify-center h-screen flex-col items-center ">
