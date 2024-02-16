@@ -18,6 +18,8 @@ const Editor = () => {
             console.error(error);
         };
             };
+    //redirect user to / if he isn't logged in 
+    //TODO: Temporary solution, change this in future
     if(cookies.get('jwt')){
       console.log(cookies.get('jwt'))
         //fetchAllUsers();

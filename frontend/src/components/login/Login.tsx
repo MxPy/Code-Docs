@@ -12,8 +12,9 @@ const cookies = new Cookies();
 const Login = () => {
     const navi = useNavigate();
 
+    //redirect user to / if he's logged in 
+    //TODO: Temporary solution, change this in future
     useEffect(() => {
-        
         if(!cookies.get('jwt')){
             console.log(cookies.get('jwt'))
         }
@@ -32,7 +33,7 @@ const Login = () => {
         const {name, value} = e.target;
         setFormData(prevData =>({...prevData, [name]: value}))
     }
-    
+
     const handleSubmit =async (e:React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         try{
