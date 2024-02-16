@@ -1,4 +1,4 @@
-from fastapi import status, Response, HTTPException, APIRouter, WebSocket, WebSocketDisconnect
+from fastapi import status, Response, HTTPException, APIRouter, WebSocket, WebSocketDisconnect , Query
 from auth import jwt_handler, jwt_bearer
 from uuid import uuid4
 from database import schemas
@@ -21,6 +21,10 @@ async def user_login(user:schemas.UserLogin):
         "token": token,
         "room_id": user.room_id
         }  
+    
+@router.get("/myself", status_code=status.HTTP_200_OK)
+async def user_login(token: str = Query(...)):
+    return jwt_handler.decodeJWT(token=token)
 
 #TODO: move this to other router
 manager = ConnectionManager()
