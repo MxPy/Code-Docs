@@ -29,14 +29,11 @@ const Chat = ({ws}: socket) => {
     };
     
   return (
-    <div>
-        <div className="w-1/5 h-1/5 mx-auto flex p-4 border bg-transparent border-teal-400 rounded-lg shadow-xl">
+        <div className="w-1/6 h-3/6 mx-auto grid overflow-y-auto overflow-hidden p-4 border bg-transparent auto-rows-max border-teal-400 rounded-xl shadow-xl">
             <div className="pt-1 ">
-            <ul className="max-w-lg min-w-md divide-y divide-teal-800  " id='msg'></ul>
+            <ul className="max-w-lg min-w-md divide-y divide-teal-800 " id='msg'></ul>
             </div>
         </div>
-    </div>
-    
   )
 }
 

@@ -39,6 +39,6 @@ async def user_connect(websocket: WebSocket, token: str):
             data = await websocket.receive_json()
             await manager.broadcast(str(room_id), data)
     except WebSocketDisconnect:
-        manager.disconnect(str(room_id), websocket)
+        await manager.disconnect(str(room_id), websocket)
         #await manager.broadcast(str(room_id), "disconected")
             
