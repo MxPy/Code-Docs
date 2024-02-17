@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Cookies from "universal-cookie";
+import Chat from "./Chat";
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from "../../Api";
 type UserData = {
@@ -12,13 +13,14 @@ const Editor = () => {
   
   const navi = useNavigate();
   const [loading, setLoading] = useState(false); 
+  
   const [formData, setFormData] = useState<UserData> ({
     username: '',
     room_id: '',
 })
-
   
 
+const [ws, setSocket] = useState<WebSocket | null>(null)
 
   useEffect(() => {
       //redirect user to / if he isn't logged in 
@@ -31,7 +33,7 @@ const Editor = () => {
             //temp
             setFormData(response.data)
             console.log(formData.username);
-            setLoading(false); 
+            
             
           }catch(error){
               alert("Something gone wrong")
@@ -39,17 +41,12 @@ const Editor = () => {
         
       }
       getData()
-      console.log(formData.room_id);
-      
+      //console.log(formData.room_id);
       const ws = new WebSocket('ws://localhost:8000/user/connect/'+cookies.get('jwt'));
-      ws.onmessage = function(event) {
-        var messages = document.getElementById('messages');
-        var message = document.createElement('li');
-        var content = document.createTextNode(JSON.parse(event.data).message);
-        message.appendChild(content);
-        if(messages)
-        messages.appendChild(message);
-      };
+      setSocket(ws);
+      console.log(ws.url);
+      
+      setLoading(false); 
       return () => {
         if (ws.readyState === 1) { // <-- This is important
             ws.close();
@@ -72,6 +69,10 @@ const Editor = () => {
                   <div>Jestes w pokoju {formData.room_id}</div>
                   <div>Link do zaproszenia do pokoju http://localhost:3000/login/{formData.room_id}</div>
                   <ul id='messages'></ul>
+                  {ws ? (
+                    <Chat ws={ws}></Chat>
+                  ):(<div>chuj</div>)}
+                  
                   </div>
                 )} 
     </div>
