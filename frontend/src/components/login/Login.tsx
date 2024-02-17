@@ -43,6 +43,7 @@ const Login = () => {
             const response = await api.post('/user/login', formData);
             cookies.set("jwt", response.data["token"]["access_token"], {path: '/', expires: new Date(Date.now()+response.data["token"]["exp"]*1000)});
             formData.room_id = response.data["room_id"]
+            //TODO: fix refrashing page before getting token from server
             setTimeout(()=>{
                 navi("/", {replace: true})
             }, 100)
