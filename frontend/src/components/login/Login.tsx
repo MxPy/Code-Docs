@@ -39,7 +39,7 @@ const Login = () => {
     const handleSubmit =async (e:React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         try{
-            if(room_id) formData.room_id = room_id.toString();
+            if(room_id)formData.room_id = room_id.toString();
             const response = await api.post('/user/login', formData);
             cookies.set("jwt", response.data["token"]["access_token"], {path: '/', expires: new Date(Date.now()+response.data["token"]["exp"]*1000)});
             formData.room_id = response.data["room_id"]
@@ -53,14 +53,13 @@ const Login = () => {
   return (
     <div className="flex justify-center h-screen flex-col items-center ">
         <a href="#" className="flex items-center text-2xl font-semibold text-gray-900 dark:text-white"> </a>
-        <div className="flex justify-center bg-slate-700 text-gray-200 border-slate-500  rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-">
+        <div className="flex justify-center">
             <div className="p-4 space-y-4 md:space-y-3 sm:p-4">
                 <form onSubmit = {handleSubmit} className="space-y-4 md:space-y-3" action="#">
                 <div >
-                        <input onChange = {handleChange} type="username" name="username" id="username" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Username"></input>
-
-                    </div>
-                    <button className="flex text-gray-300 transition duration-300 ease-in-out justify-center rounded-lg flex-1 shadow-lg p-2 py-2 font-semibold mx-auto bg-blue-800 hover:bg-blue-900 border border-slate-600">Start Coding Now</button>
+                        <input onChange = {handleChange} type="username" name="username" id="username" className="text-white border bg-transparent border-teal-400 focus:ring-teal-400 focus:ring-4 focus:outline-none  font-semibold rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2 " placeholder="Username"></input>
+                </div>
+                <button className="flex justify-center mx-auto text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-semibold rounded-lg text-sm px-5 py-2.5 text-center ">Start Coding Now</button>
                 </form>
             </div>
         </div>

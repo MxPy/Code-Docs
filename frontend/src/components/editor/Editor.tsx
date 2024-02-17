@@ -63,7 +63,7 @@ const Editor = () => {
      
 }, [])
   return (
-    <div>
+    <div className="flex h-screen flex-col text-white"  >
       {loading ? ( 
                     <h4>Loading...</h4> 
                 ) : ( 
