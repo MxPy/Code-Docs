@@ -6,7 +6,7 @@ import Editor from './components/editor/Editor';
 
 function App() {
   return (
-    <div className="bg-slate-800">
+    <div className="bg-slate-800 ">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Editor/>} />

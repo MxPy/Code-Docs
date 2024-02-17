@@ -3,6 +3,7 @@ import Cookies from "universal-cookie";
 import Chat from "./Chat";
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from "../../Api";
+import CodeEditor from "./CodeEditor";
 type UserData = {
   username: string;
   room_id: string; 
@@ -69,7 +70,14 @@ const [ws, setSocket] = useState<WebSocket | null>(null)
                   <div>Jestes w pokoju {formData.room_id}</div>
                   <div>Link do zaproszenia do pokoju http://localhost:3000/login/{formData.room_id}</div>
                   {ws ? (
-                    <Chat ws={ws}></Chat>
+                    <div className="flex h-screen flex-row text-white">
+                      <div className="w-5/6"><CodeEditor></CodeEditor></div>
+                      
+                      <div className="w-1/6"> <div className="h-2/3"></div><div className="h-1/3 "><Chat ws={ws}></Chat></div></div>
+                      
+                      
+                    </div>
+                    
                   ):(<div>chuj</div>)}
                   
                   </div>
