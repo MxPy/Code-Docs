@@ -11,6 +11,7 @@ const cookies = new Cookies();
 const Editor = () => {
   
   const navi = useNavigate();
+  const [loading, setLoading] = useState(false); 
   const [formData, setFormData] = useState<UserData> ({
     username: '',
     room_id: '',
@@ -25,10 +26,13 @@ const Editor = () => {
       if(cookies.get('jwt')){
         const getData = async () => {
           try{
+            setLoading(true); 
             const response = await api.get('/user/myself?token='+cookies.get('jwt'))
             //temp
-            formData.username = response.data["username"]
-            formData.room_id = response.data["room_id"]
+            setFormData(response.data)
+            console.log(formData.username);
+            setLoading(false); 
+            
           }catch(error){
               alert("Something gone wrong")
           }
@@ -37,7 +41,7 @@ const Editor = () => {
       getData()
       console.log(formData.room_id);
       
-      const ws = new WebSocket('ws://localhost:8000/user/connect/'+formData.room_id);
+      const ws = new WebSocket('ws://localhost:8000/user/connect/'+cookies.get('jwt'));
       ws.onmessage = function(event) {
         var messages = document.getElementById('messages');
         var message = document.createElement('li');
@@ -60,8 +64,15 @@ const Editor = () => {
 }, [])
   return (
     <div>
-      <div>Witaj</div>
-      <ul id='messages'></ul>
+      {loading ? ( 
+                    <h4>Loading...</h4> 
+                ) : ( 
+                  <div>
+                  <div>Witaj {formData.username}</div>
+                  <div>Jestes w pokoju {formData.room_id}</div>
+                  <ul id='messages'></ul>
+                  </div>
+                )} 
     </div>
     
     

@@ -28,8 +28,9 @@ async def user_login(token: str = Query(...)):
 
 #TODO: move this to other router
 manager = ConnectionManager()
-@router.websocket("/connect/{room_id}")
-async def user_connect(websocket: WebSocket, room_id: str):
+@router.websocket("/connect/{token}")
+async def user_connect(websocket: WebSocket, token: str):
+    room_id = jwt_handler.decodeJWT(token=token)["room_id"]
     await manager.connect(str(room_id), websocket)
     await manager.broadcast("connected", room_id)
     try: 
