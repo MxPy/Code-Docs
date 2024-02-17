@@ -27,13 +27,37 @@ const Chat = ({ws}: socket) => {
         message.appendChild(messageDiv)
         if(messagesList) messagesList.appendChild(message);
     };
+
+    const sendMessage =async (e:React.ChangeEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        var input = document.getElementById("messageText") as HTMLInputElement;
+        var message = { "message": input.value };
+        ws.send(JSON.stringify(message));
+        input.value = '';
+    }
+    
     
   return (
+    <div>
         <div className="w-1/6 h-3/6 mx-auto grid overflow-y-auto overflow-hidden p-4 border bg-transparent auto-rows-max border-teal-400 rounded-xl shadow-xl">
             <div className="pt-1 ">
             <ul className="max-w-lg min-w-md divide-y divide-teal-800 " id='msg'></ul>
             </div>
         </div>
+        <a href="#" className="flex items-center text-2xl font-semibold text-gray-900 dark:text-white"> </a>
+        <div className="flex justify-center">
+            <div className="p-2 space-y-2 md:space-y-3 sm:p-2">
+                <form onSubmit = {sendMessage} className="" action="#">
+                <div >
+                        <input  type="username" name="username" id="messageText" className="text-white border bg-transparent border-teal-400 focus:ring-teal-400 focus:ring-4 focus:outline-none  font-semibold rounded-lg text-md px-5 py-2.5 text-center me-2 mb-2 " placeholder="message"></input>
+                        <button className="mx-auto text-white bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 shadow-lg shadow-teal-500/50 dark:shadow-lg dark:shadow-teal-800/80 font-semibold rounded-lg text-sm px-5 py-2.5 text-center ">Send</button>
+                </div>
+                
+                </form>
+            </div>
+        </div>
+    </div>
+        
   )
 }
 
