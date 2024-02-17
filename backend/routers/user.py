@@ -31,13 +31,14 @@ manager = ConnectionManager()
 @router.websocket("/connect/{token}")
 async def user_connect(websocket: WebSocket, token: str):
     room_id = jwt_handler.decodeJWT(token=token)["room_id"]
+    username = jwt_handler.decodeJWT(token=token)["username"]
     await manager.connect(str(room_id), websocket)
-    await manager.broadcast("connected", room_id)
+    #await manager.broadcast(str(room_id), "connected")
     try: 
         while True:
             data = await websocket.receive_json()
-            await manager.broadcast(room_id, data)
+            await manager.broadcast(str(room_id), data)
     except WebSocketDisconnect:
-        manager.disconnect(room_id, websocket)
-        await manager.broadcast("disconected", room_id)
+        manager.disconnect(str(room_id), websocket)
+        #await manager.broadcast(str(room_id), "disconected")
             

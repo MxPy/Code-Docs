@@ -10,7 +10,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Editor/>} />
-          <Route path="/login" element={<Login/>} />
+          <Route path="/login/:room_id?" element={<Login/>} />
         </Routes>
       </BrowserRouter>
     </div>

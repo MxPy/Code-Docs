@@ -70,6 +70,7 @@ const Editor = () => {
                   <div>
                   <div>Witaj {formData.username}</div>
                   <div>Jestes w pokoju {formData.room_id}</div>
+                  <div>Link do zaproszenia do pokoju http://localhost:3000/login/{formData.room_id}</div>
                   <ul id='messages'></ul>
                   </div>
                 )} 
