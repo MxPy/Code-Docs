@@ -19,7 +19,7 @@ const Chat = ({ws}: socket) => {
         messageUsernameP.appendChild(username)
 
         var messageContentP = document.createElement('p');
-        messageContentP.className = "text-sm text-gray-500 truncate dark:text-gray-400"
+        messageContentP.className = "text-sm text-gray-500 truncate dark:text-gray-400 overflow-hidden"
         var content = document.createTextNode(JSON.parse(event.data).message);
         messageContentP.appendChild(content);
         messageDiv.appendChild(messageUsernameP)
@@ -39,9 +39,9 @@ const Chat = ({ws}: socket) => {
     
   return (
     <div>
-        <div className="align-bottom h-3/6 mx-auto grid overflow-y-auto overflow-hidden p-4 border bg-transparent auto-rows-max border-teal-400 rounded-xl shadow-xl">
+        <div className="align-bottom max-h-50 min-h-72 max-h-72 max-w-50 mx-auto grid p-4 overflow-scroll border bg-transparent auto-rows-max border-teal-400 rounded-xl shadow-xl">
             <div className="pt-1 ">
-            <ul className="max-w-lg min-w-md divide-y divide-teal-800 " id='msg'></ul>
+            <ul className="min-w-fit divide-y divide-teal-800 min-h-max max-w-fit overflow-x-auto " id='msg'></ul>
             </div>
         </div>
         <a href="#" className="flex items-center text-2xl font-semibold text-gray-900 dark:text-white"> </a>
