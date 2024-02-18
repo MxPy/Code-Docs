@@ -2,36 +2,43 @@ import React from 'react'
 
 type socket = {
     ws: WebSocket
+    username: string;
 }
 
-const Chat = ({ws}: socket) => {
+const Chat = ({ws, username}: socket) => {
     //console.log(ws.url);
     ws.onmessage = function(event) {
-        var messagesList = document.getElementById('msg');
-        var message = document.createElement('li');
-        message.className = "pb-3 sm:pb-4"
-        var messageDiv = document.createElement('div');
-        messageDiv.className = "flex-1 min-w-0"
-        var messageUsernameP = document.createElement('p');
-        messageUsernameP.className = "text-sm font-semibold text-gray-900 truncate dark:text-white"
-        //temp
-        var username = document.createTextNode("username")
-        messageUsernameP.appendChild(username)
+        if(JSON.parse(event.data).type == 0){
+            var messagesList = document.getElementById('msg');
+            var message = document.createElement('li');
+            message.className = "pb-3 sm:pb-4"
+            var messageDiv = document.createElement('div');
+            messageDiv.className = "flex-1 min-w-0"
+            var messageUsernameP = document.createElement('p');
+            messageUsernameP.className = "text-sm font-semibold text-gray-900 truncate dark:text-white"
+            //temp
+            var username = document.createTextNode(JSON.parse(event.data).username)
+            messageUsernameP.appendChild(username)
 
-        var messageContentP = document.createElement('p');
-        messageContentP.className = "text-sm text-gray-500 truncate dark:text-gray-400 overflow-hidden"
-        var content = document.createTextNode(JSON.parse(event.data).message);
-        messageContentP.appendChild(content);
-        messageDiv.appendChild(messageUsernameP)
-        messageDiv.appendChild(messageContentP)
-        message.appendChild(messageDiv)
-        if(messagesList) messagesList.appendChild(message);
+            var messageContentP = document.createElement('p');
+            messageContentP.className = "text-sm text-gray-500 truncate dark:text-gray-400 overflow-hidden"
+            var content = document.createTextNode(JSON.parse(event.data).message);
+            messageContentP.appendChild(content);
+            messageDiv.appendChild(messageUsernameP)
+            messageDiv.appendChild(messageContentP)
+            message.appendChild(messageDiv)
+            if(messagesList) messagesList.appendChild(message);
+        }
+        
     };
 
     const sendMessage =async (e:React.ChangeEvent<HTMLFormElement>) => {
         e.preventDefault();
         var input = document.getElementById("messageText") as HTMLInputElement;
-        var message = { "message": input.value };
+        var message = { "username": username,
+                        //type 0 - chat message, type 1 - code
+                        "type": 0,
+                        "message": input.value};
         ws.send(JSON.stringify(message));
         input.value = '';
     }

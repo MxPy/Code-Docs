@@ -72,8 +72,8 @@ const [ws, setSocket] = useState<WebSocket | null>(null)
                   {ws ? (
                     <div className="flex max-h-screen flex-row text-white">
                       <div className=""></div>
-                      <div className="w-5/6"><CodeEditor></CodeEditor></div>
-                      <div className="w-1/6"> <div className="h-2/3"></div><div className="h-1/3"><Chat ws={ws}></Chat></div></div>
+                      <div className="w-5/6"><CodeEditor username={formData.username} ws={ws} ></CodeEditor></div>
+                      <div className="w-1/6"> <div className="h-2/3"></div><div className="h-1/3"><Chat username={formData.username} ws={ws} ></Chat></div></div>
                     </div>
                     
                   ):(<div>chuj</div>)}
