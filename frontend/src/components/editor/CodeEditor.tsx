@@ -12,7 +12,7 @@ const CodeEditor = ({ws, username}: socket) => {
     //console.log('here is the current model value:', value);
         var message = { "username": username,
                         //type 0 - chat message, type 1 - code
-                        "type": 0,
+                        "type": 1,
                         "message": value};
         console.log("chuj");
                         
@@ -20,7 +20,7 @@ const CodeEditor = ({ws, username}: socket) => {
   }
 
   ws.onmessage = function(event) {
-    if(JSON.parse(event.data).type == 0){
+    if(JSON.parse(event.data).type == 1){
       setEditorValue(JSON.parse(event.data).message)
     }
   }
