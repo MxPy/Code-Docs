@@ -20,8 +20,10 @@ const CodeEditor = ({ws, username}: socket) => {
   }
 
   ws.onmessage = function(event) {
+    //console.log("chuj2");
     if(JSON.parse(event.data).type == 1){
       setEditorValue(JSON.parse(event.data).message)
+      
     }
   }
   
